@@ -19,9 +19,9 @@ async function getData(str){
 const url2 = 'https://www.gutenberg.org/ebooks/';
 // doesnt work yet
 async function getBook(url2, id){
-    const request = await fetch(url2 + id);
-    const json = await request.json();
-    console.log(json)
+  const request = await fetch(url2 + id);
+  const json = await request.json();
+  console.log(json)
 };
 
 getData("sherlock");
