@@ -1,0 +1,9 @@
+# Ignore Node dependencies
+node_modules/
+
+# Optional: Ignore log or debug/test output
+*.log
+dev-sandbox.js
+
+# Ignore local history files
+history.json
