@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 // Ask user a question and return input as Promise.
 function ask(rl, question) {
     return new Promise(resolve => rl.question(question, answer => resolve(answer.trim())));
