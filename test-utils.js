@@ -20,42 +20,80 @@ async function testFetchJSON() {
 
 // Test 3: Test fetchText with known Gutenberg book
 async function testFetchText() {
-    console.log('\n📖 Test: fetchText using valid text URL from Gutendex');
-    const data = await fetchJSON('https://gutendex.com/books?search=pride%20and%20prejudice');
+    console.log('\nTest: fetchText using valid text URL from Gutendex (Frankenstein)');
 
-    if (data && data.results.length > 0) {
-        const book = data.results[0];
-        const textUrl =
-            book.formats['text/plain; charset=utf-8'] ||
-            book.formats['text/plain'] ||
-            null;
+    const data = await fetchJSON('https://gutendex.com/books?search=frankenstein');
 
-        if (!textUrl) {
-            console.log('No plain text format available for this book.');
-            return;
-        }
+    if (!data || data.results.length === 0) {
+        console.log('No results found.');
+        return;
+    }
 
-        const text = await fetchText(textUrl);
-        if (text) {
-            console.log('First 300 characters:\n');
-            console.log(text.substring(0, 300));
-        } else {
-            console.log('Failed to fetch book text.');
-        }
+    // Pick book that has correct plain text format
+    const book = data.results.find(b => {
+        const formats = b.formats || {};
+        return Object.keys(formats).some(key =>
+            key.startsWith('text/plain') && formats[key].endsWith('.txt.utf-8')
+        );
+    });
+
+    if (!book) {
+        console.log('No book with valid plain text format found.');
+        return;
+    }
+
+    // Get matching formatcl dynamically
+    const textUrlKey = Object.keys(book.formats).find(key =>
+        key.startsWith('text/plain') && book.formats[key].endsWith('.txt.utf-8')
+    );
+
+    const textUrl = book.formats[textUrlKey];
+
+    const text = await fetchText(textUrl);
+    if (text) {
+        const snippet = text.slice(0, 300);
+        console.log(`fetchText succeeded. Showing ${snippet.length} characters:\n`);
+        console.log('START>>>' + snippet + '<<<END');
     } else {
-        console.log('No results for "Pride and Prejudice".');
+        console.log('fetchText failed to retrieve text.');
     }
 }
 
 // Test 4: Test safeFetch directly
 async function testSafeFetchText() {
-    console.log('\nTest: safeFetch() directly with "text" type');
-    const text = await safeFetch('https://www.gutenberg.org/cache/epub/84/plain/84-0.txt', 'text');
+    console.log('\nTest: safeFetch() directly with "text" type (Frankenstein)');
+
+    const data = await fetchJSON('https://gutendex.com/books?search=frankenstein');
+    if (!data || data.results.length === 0) {
+        console.log('No results found.');
+        return;
+    }
+
+    const book = data.results.find(b => {
+        const formats = b.formats || {};
+        return Object.keys(formats).some(key =>
+            key.startsWith('text/plain') && formats[key].endsWith('.txt.utf-8')
+        );
+    });
+
+    if (!book) {
+        console.log('No book with valid plain text format found.');
+        return;
+    }
+
+    const textUrlKey = Object.keys(book.formats).find(key =>
+        key.startsWith('text/plain') && book.formats[key].endsWith('.txt.utf-8')
+    );
+
+    const textUrl = book.formats[textUrlKey];
+
+    const text = await safeFetch(textUrl, 'text');
     if (text) {
-        console.log('First 200 characters:\n');
-        console.log(text.substring(0, 200));
+        const snippet = text.slice(0, 300);
+        console.log(`safeFetch succeeded. Showing ${snippet.length} characters:\n`);
+        console.log('START>>>' + snippet + '<<<END');
     } else {
-        console.log('safeFetch() failed.');
+        console.log('safeFetch failed to retrieve text.');
     }
 }
 
@@ -65,6 +103,7 @@ async function runTests() {
     await testFetchJSON();
     await testFetchText();
     await testSafeFetchText();
+    console.log('\nAll tests complete.');
 }
 
 runTests();
