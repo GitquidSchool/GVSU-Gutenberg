@@ -58,7 +58,7 @@ async function printBookTitles(searchTerm) {
         // Print number of results and each title.
         console.log(`Found ${results.length} results for "${searchTerm}":`);
         for (let i = 0; i < results.length; ++i) {
-            console.log(`${i + 1}. ${results[i].title}`);
+            console.log(`${i + 1}. ${results[i].title} - ID: ${results[i].id}`);
         }
 
     } catch (error) {
@@ -71,5 +71,6 @@ module.exports = {
     safeFetch,
     fetchJSON,
     fetchText,
-    printBookTitles
+    printBookTitles,
+    ask
 };
