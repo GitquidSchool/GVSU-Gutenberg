@@ -1,5 +1,6 @@
 const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles } = require('./utils');
+const { addToHistory, listHistory, loadHistory, getBookFromHistory, saveHistory } = require('./history');
 const { readBook } = require('./reader');
 
 // Test 1: Test printBookTitles
