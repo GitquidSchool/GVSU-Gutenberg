@@ -1,13 +1,14 @@
 const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles, ask } = require('./utils');
 const { readBook } = require('./reader');
+const { addToHistory } = require('./history')
 
 // searches for a user specified book
 async function search() {
-    const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-    });
+        const rl = readline.createInterface({
+            input: process.stdin,
+            output: process.stdout
+        });
 
     while (true) {
         // user enters title of book or book author
@@ -51,21 +52,16 @@ async function search() {
             // uses readBook() in utils.js file
             const text = await fetchText(textUrl);
             if (text) {
-                rl.close();
+                addToHistory(selectedBook);
                 await readBook(text);
-                return;
             } else {
                 console.log('Failed to load book text.');
+                continue;
             }
         }
     }
 }
 
-function isBook(book, shelf){
-    return book.id === shelf.results.id;
-}
 module.exports = {
     search
 };
-
-search();
