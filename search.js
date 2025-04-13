@@ -1,6 +1,7 @@
 const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles, ask } = require('./utils');
 const { readBook } = require('./reader');
+const { addToHistory } = require('./history')
 
 // searches for a user specified book
 async function search() {
@@ -51,6 +52,7 @@ async function search() {
             // uses readBook() in utils.js file
             const text = await fetchText(textUrl);
             if (text) {
+                addToHistory(selectedBook);
                 await readBook(text);
             } else {
                 console.log('Failed to load book text.');

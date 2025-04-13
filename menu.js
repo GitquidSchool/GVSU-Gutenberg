@@ -31,13 +31,15 @@ async function menu() {
             await search();
         }
         if (choice === '2'){
-            await listHistory();
+            listHistory();
+            console.log(`\n`)
             continue
         }
         if (choice === '3'){
-            console.log('Reread book');
-            rl.close();
-            return;
+            listHistory();
+            const bookChoice = await ask(rl, "Select a Book: ")
+            const bookIndex = parseInt(bookChoice)
+            await getBookFromHistory(bookIndex);
         }
         if (choice === '4'){
             console.log('quit');
