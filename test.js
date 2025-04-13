@@ -119,13 +119,48 @@ async function testReadBook() {
     }
 }
 
+// Book object for testing history
+const testBook = {
+    id: 9999,
+    title: "Testing 123",
+    author: "TestAuthor",
+    textUrl: "https://example.com/test.txt"
+};
+  
+// Test 6: Add a book to history
+async function testAddToHistory() {
+    console.log('\nTest: Adding a book to history...');
+    addToHistory(testBook);
+    console.log('Book added.');
+}
+
+    // Test 7: Load and show current history
+async function testShowHistory() {
+    console.log('\nTest: Listing book history...');
+    listHistory();
+}
+
+    // Test 8: Get a book from history by index
+async function testGetBookFromHistory() {
+    console.log('\nTest: Getting latest book from history...');
+    const book = getBookFromHistory(0);
+    if (book) {
+        console.log(`Found: ${book.title} by ${book.author}`);
+    } else {
+        console.log('No book found at index 0.');
+    }
+}
+
 // Run all tests in order
 async function runTests() {
     //await testPrintBookTitles();
     //await testFetchJSON();
     //await testFetchText();
     //await testSafeFetchText();
-    await testReadBook();
+    //await testReadBook();
+    await testAddToHistory();
+    await testShowHistory();
+    await testGetBookFromHistory();
     console.log('\nAll tests complete.');
 }
 
