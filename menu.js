@@ -1,8 +1,8 @@
 /*
     Ethan Umana 4/13/2025
+    Vincent Nguyen 4/13/2025
 */
 
-const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles, ask } = require('./utils');
 const { readBook } = require('./reader');
 const { search } = require('./search')
@@ -10,10 +10,6 @@ const { loadHistory, saveHistory, addToHistory, listHistory, getBookFromHistory 
 
 // main menu of project
 async function menu() {
-    const rl = readline.createInterface({ // creates a readline interface for user input
-        input: process.stdin,
-        output: process.stdout
-    });
     while (true) { // handles user inputs and restarts for invalid inputs
         // welcome message
         console.log('=== Project Gutenberg Reader ===');
@@ -22,45 +18,57 @@ async function menu() {
         console.log('3. Re-read a book from history');
         console.log('4. Quit');
 
-        const choice = await ask(rl, 'Select an Option: '); // user enters number 1-4
+        const choice = await ask('Select an Option: '); // user enters number 1-4
+
         if (choice === '1'){ // search for book
-            rl.close(); // closes readline to avoid double input
+            console.clear();
             await search(); // uses search function to find book
-            break; // breaks loop so welcome message doesnt appear when reading book
+            console.clear();
+            continue; // breaks loop so welcome message doesnt appear when reading book
         }
         else if (choice === '2'){ // view history
+            console.clear();
             listHistory(); // prints list of recent books
         }
         else if (choice === '3'){ // rereading a book
+            console.clear();
             listHistory(); // prits list of recent books
             const history = loadHistory(); // variable that holds history of books list
-            const bookChoice = await ask(rl, `Select a Book from 1-${history.length}: `) // user enters books index from list
+            const bookChoice = await ask(`Select a Book from 1-${history.length}: `) // user enters books index from list
             const bookIndex = parseInt(bookChoice) // changes user input from string to integer
             const book = getBookFromHistory(bookIndex - 1); // get selected book from history list
+
             if (book) { // if book in history list
-                const url = 'https://gutendex.com/books?search=' + encodeURI(book); // make url for api
-                const data = await fetchJSON(url); // fetch JSON data from api
-
-                // copied from test.js
-                // finds file that is plain text format
-                const key = Object.keys(book.formats).find(k => k.startsWith('text/plain') && book.formats[k].endsWith('.txt.utf-8'));
-                const textUrl = book.formats[key]; // gets url to plain text book
-
-                // uses readBook() in utils.js file
+                // Look inside formats to find a plain text of book
+                const key = Object.keys(book.formats).find(k =>
+                    k.startsWith('text/plain') && book.formats[k].endsWith('.txt.utf-8'));
+                // Get URL to actual plain-text
+                const textUrl = book.formats[key];
+                // download book from link
                 const text = await fetchText(textUrl);
-                if (text) { // if plain text file exists
-                    await readBook(text); // read book
-                    break; // breaks loop so welcome message doesnt appear when reading book
-                }
+
+                // If got book text, open in reader
+                if (text) {
+                    await readBook(text);
+                    console.clear();
+                    //console.log();   
+                    continue;  
+                } else {
+                    console.log('Failed to fetch book text.');
+                    console.log();
+                }   
+
             } else { // if book not in history list
                 console.log('Invalid Choice')
+                console.log();
             }
         }
         else if (choice === '4'){ // quiting program
+            console.clear();
             console.log('quit');
-            rl.close(); // closes readline for user input
             return;
         } else { // if user input is not a number between 1-4
+            console.clear();
             console.log('Invalid Choice');
         }
     }

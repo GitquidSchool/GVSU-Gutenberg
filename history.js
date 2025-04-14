@@ -1,4 +1,5 @@
 /*
+    Vincent Nguyen 4/13/2025
     Ethan Umana 4/13/2025
 */
 
@@ -51,6 +52,8 @@ function listHistory() {
     history.forEach((book, index) => {
         console.log(`${index + 1}. ${book.title} by ${book.author}`);
     });
+
+    console.log();
 }
 
 // Get book by index.

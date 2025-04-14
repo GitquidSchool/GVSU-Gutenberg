@@ -1,21 +1,16 @@
 /*
     Ethan Umana 4/13/2025
+    Vincent Nguyen 4/13/2025
 */
 
-const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles, ask } = require('./utils');
 const { readBook } = require('./reader');
 const { addToHistory } = require('./history')
 
 // searches for a user specified book
 async function search() {
-        const rl = readline.createInterface({ // creates a readline interface for user input
-            input: process.stdin,
-            output: process.stdout
-        });
-
     while (true) { // first while loop handles Book title/author
-        const searchKey = await ask(rl, 'Enter Book Title/Author: '); // user enters title of book or book author
+        const searchKey = await ask('Enter Book Title/Author: '); // user enters title of book or book author
         await printBookTitles(searchKey); // prints matching books
         const url = 'https://gutendex.com/books?search=' + encodeURI(searchKey); // build url for api
         const data = await fetchJSON(url); // gets JSON data from api
@@ -28,7 +23,7 @@ async function search() {
         
         while (true) { // second while loop handles Book id
             // user enters ID number of book wanted
-            const bookID = await ask(rl, '\nEnter The Book ID of the book you want: '); 
+            const bookID = await ask('\nEnter The Book ID of the book you want: '); 
             const convertedID = parseInt(bookID) // converts string to integer
 
             // checks if id is an integer
