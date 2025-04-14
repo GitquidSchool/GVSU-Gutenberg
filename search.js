@@ -42,12 +42,11 @@ async function search() {
                 continue;
             }
 
-            // copied from test.js
-            // finds file that is plain text format
+            // Look inside formats to find a plain text of book
             const key = Object.keys(selectedBook.formats).find(k => k.startsWith('text/plain') && selectedBook.formats[k].endsWith('.txt.utf-8'));
-            const textUrl = selectedBook.formats[key]; // gets url to plain text book
+            const textUrl = selectedBook.formats[key]; // Get URL to actual plain-text
 
-            const text = await fetchText(textUrl);
+            const text = await fetchText(textUrl);// download book from link
             if (text) { // if plain text file exists
                 addToHistory(selectedBook); // add book to history
                 await readBook(text); // read book
