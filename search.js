@@ -54,6 +54,7 @@ async function search() {
             if (text) {
                 addToHistory(selectedBook);
                 await readBook(text);
+                return;
             } else {
                 console.log('Failed to load book text.');
                 continue;

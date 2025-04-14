@@ -29,22 +29,40 @@ async function menu() {
         if (choice === '1'){
             rl.close();
             await search();
+            break;
         }
         if (choice === '2'){
             listHistory();
             console.log(`\n`)
-            continue
         }
         if (choice === '3'){
             listHistory();
             const bookChoice = await ask(rl, "Select a Book: ")
             const bookIndex = parseInt(bookChoice)
-            await getBookFromHistory(bookIndex);
+            const book = getBookFromHistory(bookIndex - 1);
+            if (book) {
+                const url = 'https://gutendex.com/books?search=' + encodeURI(book);
+                const data = await fetchJSON(url);
+
+                const key = Object.keys(book.formats).find(k => k.startsWith('text/plain') && book.formats[k].endsWith('.txt.utf-8'));
+                const textUrl = book.formats[key];
+
+                // uses readBook() in utils.js file
+                const text = await fetchText(textUrl);
+                if (text) {
+                    await readBook(text);
+                    break;
+                }
+            } else {
+                console.log('Invalid Choice')
+            }
         }
         if (choice === '4'){
             console.log('quit');
             rl.close();
             return;
+        } else {
+            console.log('Invalid Choice');
         }
     }
 }
