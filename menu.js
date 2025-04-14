@@ -15,7 +15,7 @@ async function menu() {
         output: process.stdout
     });
     while (true) { // handles user inputs and restarts for invalid inputs
-        // program welcome message
+        // welcome message
         console.log('=== Project Gutenberg Reader ===');
         console.log('1. Search for a book');
         console.log('2. View reading history');
@@ -26,7 +26,7 @@ async function menu() {
         if (choice === '1'){ // search for book
             rl.close(); // closes readline to avoid double input
             await search(); // uses search function to find book
-            break; // breaks loop so welcome message doesnt appear when readig book
+            break; // breaks loop so welcome message doesnt appear when reading book
         }
         else if (choice === '2'){ // view history
             listHistory(); // prints list of recent books
@@ -50,7 +50,7 @@ async function menu() {
                 const text = await fetchText(textUrl);
                 if (text) { // if plain text file exists
                     await readBook(text); // read book
-                    break; // breaks loop so welcome message doesnt appear when readig book
+                    break; // breaks loop so welcome message doesnt appear when reading book
                 }
             } else { // if book not in history list
                 console.log('Invalid Choice')

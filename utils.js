@@ -1,3 +1,7 @@
+/*
+    Ethan Umana 4/13/2025
+*/
+
 // Ask user a question and return input as Promise.
 function ask(rl, question) {
     return new Promise(resolve => rl.question(question, answer => resolve(answer.trim())));

@@ -1,3 +1,7 @@
+/*
+    Ethan Umana 4/13/2025
+*/
+
 const fs = require('fs');
 const path = require('path');
 

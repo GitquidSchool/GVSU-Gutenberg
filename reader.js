@@ -1,3 +1,7 @@
+/*
+    Ethan Umana 4/13/2025
+*/
+
 const readline = require('readline');
 
 function paginateByLines(text, charsPerPage = 1000) {

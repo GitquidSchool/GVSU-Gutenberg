@@ -52,7 +52,6 @@ async function search() {
             const key = Object.keys(selectedBook.formats).find(k => k.startsWith('text/plain') && selectedBook.formats[k].endsWith('.txt.utf-8'));
             const textUrl = selectedBook.formats[key]; // gets url to plain text book
 
-            // uses readBook() in utils.js file to download content
             const text = await fetchText(textUrl);
             if (text) { // if plain text file exists
                 addToHistory(selectedBook); // add book to history

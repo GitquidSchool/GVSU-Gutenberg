@@ -1,3 +1,7 @@
+/*
+    Ethan Umana 4/13/2025
+*/
+
 const readline = require('readline');
 const { safeFetch, fetchJSON, fetchText, printBookTitles } = require('./utils');
 const { addToHistory, listHistory, loadHistory, getBookFromHistory, saveHistory } = require('./history');
